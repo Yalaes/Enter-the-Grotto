@@ -22,13 +22,14 @@ config/icon="res://icon.png"
 [autoload]
 
 Global="*res://Autoloads/Global.gd"
+MUSIC="*res://Autoloads/MUSIC.tscn"
 
 [display]
 
 window/size/width=240
 window/size/height=135
-window/size/test_width=720
-window/size/test_height=405
+window/size/test_width=1080
+window/size/test_height=607
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
 
@@ -72,6 +73,21 @@ jump={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
+shoot={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Mob"
+2d_physics/layer_3="ProjectilePlayer"
+2d_physics/layer_4="ProjectileMob"
+2d_physics/layer_5="Collectible"
+2d_physics/layer_6="Environement"
+2d_physics/layer_7="HBox"
 
 [rendering]
 

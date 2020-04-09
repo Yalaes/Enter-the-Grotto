@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Actors/Mobs/SpriteFrames/Blob.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Actors/Mobs/Mob.gd" type="Script" id=2]
+[ext_resource path="res://HBoxes/HBox.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.72791, 4.85852 )
+
+[node name="Actor" type="Area2D" groups=[
+"Mob",
+]]
+collision_layer = 2
+collision_mask = 32
+script = ExtResource( 2 )
+spritePath = "res://Actors/Mobs/SpriteFrames/Skeleton.tres"
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1.25344 )
+shape = SubResource( 1 )
+
+[node name="VisibilityEnabler2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 0, -0.846393 )
+scale = Vector2( 0.807638, 0.207468 )
+
+[node name="HBox" parent="." instance=ExtResource( 3 )]
+[connection signal="body_entered" from="." to="." method="_on_Actor_body_entered"]

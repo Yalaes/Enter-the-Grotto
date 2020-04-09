@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/443061__schoggimousse__water-cave.ogg-393ec68e4a8a082446bd15672a53ee14.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/443061__schoggimousse__water-cave.ogg"
+dest_files=[ "res://.import/443061__schoggimousse__water-cave.ogg-393ec68e4a8a082446bd15672a53ee14.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
