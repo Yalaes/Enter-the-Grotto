@@ -10,7 +10,7 @@ export var speed: = 15
 export var direction:float = -1.0
 
 # other export
-export var health: int
+export var health: int = 4
 
 func _ready() -> void:
 	anim.frames = load(spritePath)
@@ -31,8 +31,22 @@ func flip_anim(dir) -> void:
 		anim.flip_h = true
 
 func _on_Actor_body_entered(body: Node) -> void:
+	#environment collision only (for mvnt direction) -- not hit/hurt box
 	if body.is_in_group("Player"):
-		print("player")
+		return
 	else:
 		direction = -direction
+
+func _on_area_entered(area: Area2D) -> void:	
+	if health > 0:
+		hurt_animation()
+		if !area.is_in_group("Player"): # so its a projectile..
+			health -= 1
+	else:
+		die()
+
+func hurt_animation() -> void:
+	print("mob hurt anim")
 	
+func die() -> void:
+	queue_free()

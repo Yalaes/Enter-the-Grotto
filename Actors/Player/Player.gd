@@ -28,6 +28,9 @@ export(String, FILE) var projectilePath
 var Projectile
 export var shootTimer: = 0.25
 
+#player stats
+var hp: = 4
+
 func _ready() -> void:
 	Projectile = load(projectilePath)
 	$TimerCanShoot.wait_time = shootTimer
@@ -119,3 +122,18 @@ func _on_TimerCanShoot_timeout() -> void:
 
 func restart_timer() -> void:
 	$TimerCanShoot.start()
+
+func _on_PlayerHurtBox_area_entered(area: Area2D) -> void:
+	print("hit by a mob")
+	if hp > 0:
+		hurt()
+		hp -= 1
+	else:
+		die()
+
+func hurt() -> void:
+	pass
+
+func die() -> void:
+	print("player is dead")
+	pass

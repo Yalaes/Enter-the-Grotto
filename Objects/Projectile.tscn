@@ -4,7 +4,7 @@
 [ext_resource path="res://Objects/Projectile.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 5.50274, 2.80881 )
+extents = Vector2( 1.32849, 2.80881 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "Collide"
@@ -54,7 +54,7 @@ tracks/0/keys = {
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 4
-collision_mask = 96
+collision_mask = 34
 script = ExtResource( 2 )
 velocity = 200.0
 texturePath = "res://Assets/Sprites/items.png"

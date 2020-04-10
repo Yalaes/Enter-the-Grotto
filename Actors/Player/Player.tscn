@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Assets/Sprites/player.png" type="Texture" id=1]
 [ext_resource path="res://Actors/Player/Player.gd" type="Script" id=2]
@@ -71,10 +71,13 @@ tracks/0/keys = {
 "values": [ 3 ]
 }
 
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 4.01049, 4.431 )
+
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
 ]]
-collision_mask = 58
+collision_mask = 32
 script = ExtResource( 2 )
 projectilePath = "res://Objects/Projectile.tscn"
 
@@ -96,17 +99,6 @@ anims/Jump = SubResource( 3 )
 anims/Run = SubResource( 4 )
 anims/Shoot = SubResource( 5 )
 
-[node name="Label" type="Label" parent="."]
-margin_left = -19.6126
-margin_top = -33.2754
-margin_right = 20.3874
-margin_bottom = -19.2754
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="TimerCanShoot" type="Timer" parent="."]
 
 [node name="ProjectilePosition" type="Position2D" parent="."]
@@ -121,4 +113,14 @@ smoothing_enabled = true
 
 [node name="ShootSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
+[node name="PlayerHurtBox" type="Area2D" parent="." groups=[
+"Player",
+]]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHurtBox"]
+position = Vector2( 0, -4.56091 )
+shape = SubResource( 6 )
 [connection signal="timeout" from="TimerCanShoot" to="." method="_on_TimerCanShoot_timeout"]
+[connection signal="area_entered" from="PlayerHurtBox" to="." method="_on_PlayerHurtBox_area_entered"]
