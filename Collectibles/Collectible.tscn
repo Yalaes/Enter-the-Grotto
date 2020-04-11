@@ -29,7 +29,7 @@ animations = [ {
 } ]
 
 [sub_resource type="CircleShape2D" id=6]
-radius = 5.52266
+radius = 9.86172
 
 [node name="Collectible" type="Area2D"]
 collision_layer = 16

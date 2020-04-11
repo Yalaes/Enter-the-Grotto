@@ -4,8 +4,9 @@ onready var animation = $AnimationPlayer
 onready var hurtSound = $HurtSound
 onready var invincibleTimer = $InvincibleTimer
 var velocity: = Vector2.ZERO
-var speed: = Global.CELL * 4
-var friction: = 0.05
+var max_speed: = Global.CELL * 4
+var acceleration: = 10.0
+var friction: = 0.1
 
 var jump: = Global.CELL * 7
 var gravity: = Global.CELL * 20
@@ -50,24 +51,34 @@ func _physics_process(delta: float) -> void:
 					
 	enter_state()
 	
-func _move(delta) -> void:
+func _move(delta) -> void:	
 	var playerInput: = get_player_input()
-	if playerInput.x == 0:
-		velocity.x = lerp(velocity.x, 0, friction)
-	velocity.x = playerInput.x * speed 
-	
+	#smooth acceleration
+	if playerInput.x != 0:
+		velocity.x += playerInput.x * acceleration 	
+		velocity.x = clamp(velocity.x, -max_speed, max_speed)
+	#smooth deceleration
+	else:
+		velocity.x = lerp(velocity.x, 0.0, friction)
+	#can the player jump?
 	if playerInput.y == -1 and canJump:
-		_jump()
+		_jump()	
+	#gravity
 	apply_gravity()
+	
 	velocity = move_and_slide(velocity, Vector2.UP)
+	
+	#flags - is_on_floor should be tested after move_and_slide
 	canJump = true if is_on_floor() else false
 	isJumping = true if !is_on_floor() else false
 
 func _shoot() -> void:
+	#can shoot while jumping
 	if isJumping:
-		apply_gravity()
-		velocity.x = lerp(velocity.x, 0, friction)
-		velocity = move_and_slide(velocity, Vector2.UP)
+		apply_gravity()		
+		velocity.x = lerp(velocity.x, 0.0, friction / 4)#jump-shoot is mor slippy
+		velocity = move_and_slide(velocity, Vector2.UP)		
+	#canShoot toggled by timerCanSHoot
 	if canShoot:		
 		$ShootSound.play()
 		var projectile = Projectile.instance()
@@ -91,11 +102,10 @@ func get_player_input() -> Vector2:
 
 	if _input != Vector2.ZERO: state = MOVE
 		
-	if _input.x != 0: lastHorizontalInput = _input.x 
+	if _input.x != 0: lastHorizontalInput = _input.x #for flip_sprite
 	
-	if Input.is_action_pressed("shoot"): # and !isJumping:
+	if Input.is_action_pressed("shoot"): # and !isJumping: - uncomment if you like
 		state = SHOOT # for animation - will check if can shoot after that
-
 	return _input
 
 func _jump() -> void:	
@@ -108,7 +118,7 @@ func enter_state() -> void:
 	# manage animation
 	match state:
 		MOVE:
-			if velocity.x :  animation.play("Run")
+			if abs(velocity.x) > acceleration*2:  animation.play("Run")
 			else: animation.play("Idle")
 			if isJumping:  animation.play("Jump")
 		SHOOT:

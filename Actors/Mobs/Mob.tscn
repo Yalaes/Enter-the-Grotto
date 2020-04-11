@@ -4,7 +4,7 @@
 [ext_resource path="res://Actors/Mobs/Mob.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 5.72791, 4.85852 )
+extents = Vector2( 5.72791, 4.10491 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 30.0119, 19.03 )
@@ -23,7 +23,7 @@ frames = ExtResource( 1 )
 frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 1.25344 )
+position = Vector2( 0, 0.0107833 )
 shape = SubResource( 1 )
 
 [node name="VisibilityEnabler2D" type="VisibilityNotifier2D" parent="."]
@@ -33,6 +33,7 @@ scale = Vector2( 0.807638, 0.207468 )
 [node name="MobSfx" type="AudioStreamPlayer" parent="."]
 
 [node name="SfxTrigger" type="Area2D" parent="."]
+visible = false
 monitorable = false
 collision_layer = 0
 

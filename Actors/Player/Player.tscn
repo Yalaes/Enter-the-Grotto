@@ -5,7 +5,7 @@
 [ext_resource path="res://Assets/Sounds/laser_006.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/hit_091.wav" type="AudioStream" id=4]
 
-[sub_resource type="CapsuleShape2D" id=7]
+[sub_resource type="CapsuleShape2D" id=1]
 radius = 2.59198
 height = 5.30431
 
@@ -94,7 +94,7 @@ frame = 5
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0.0299244, -2.66549 )
 rotation = 1.5708
-shape = SubResource( 7 )
+shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Idle = SubResource( 2 )
