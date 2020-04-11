@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Actors/Mobs/SpriteFrames/Blob.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Actors/Mobs/Mob.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.72791, 4.85852 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 30.0119, 19.03 )
 
 [node name="Actor" type="Area2D" groups=[
 "Mob",
@@ -13,10 +16,11 @@ collision_layer = 2
 collision_mask = 36
 script = ExtResource( 2 )
 spritePath = "res://Actors/Mobs/SpriteFrames/Skeleton.tres"
-health = 2
+sfxStreamPath = "res://Assets/Sounds/Mob_sound_bat.wav"
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
+frame = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1.25344 )
@@ -25,5 +29,16 @@ shape = SubResource( 1 )
 [node name="VisibilityEnabler2D" type="VisibilityNotifier2D" parent="."]
 position = Vector2( 0, -0.846393 )
 scale = Vector2( 0.807638, 0.207468 )
+
+[node name="MobSfx" type="AudioStreamPlayer" parent="."]
+
+[node name="SfxTrigger" type="Area2D" parent="."]
+monitorable = false
+collision_layer = 0
+
+[node name="SfxCollision" type="CollisionShape2D" parent="SfxTrigger"]
+shape = SubResource( 2 )
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_Actor_body_entered"]
+[connection signal="area_entered" from="SfxTrigger" to="." method="_on_SfxTrigger_entered"]
+[connection signal="area_exited" from="SfxTrigger" to="." method="_on_SfxTrigger_exited"]

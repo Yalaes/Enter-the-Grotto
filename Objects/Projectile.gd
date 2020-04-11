@@ -4,6 +4,7 @@ extends Area2D
 export var velocity: float
 export(String, FILE) var texturePath
 onready var animation = $AnimationPlayer
+onready var sfx = $AudioStreamPlayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,6 +29,7 @@ func _on_Projectile_area_entered(area: Area2D) -> void:
 	when_hitting_something()
 
 func when_hitting_something() -> void:
+	sfx.play()
 	animation.play("Collide")
 	set_physics_process(false)
 	

@@ -4,6 +4,10 @@ extends Area2D
 export(String, FILE) var spritePath
 onready var anim = $AnimatedSprite
 
+##select mob sfx
+export(String, FILE) var sfxStreamPath
+onready var mobSfx = $MobSfx
+
 # movement
 export var velocity: = Vector2.ZERO
 export var speed: = 15
@@ -15,6 +19,7 @@ export var health: int = 4
 func _ready() -> void:
 	anim.frames = load(spritePath)
 	anim.play()
+	mobSfx.stream = load(sfxStreamPath)
 
 func _physics_process(delta: float) -> void:
 	move(delta)
@@ -42,7 +47,7 @@ func _on_area_entered(area: Area2D) -> void:
 		hurt_animation()
 		if !area.is_in_group("Player"): # so its a projectile..
 			health -= 1
-	else:
+	if health <= 0:
 		die()
 
 func hurt_animation() -> void:
@@ -50,3 +55,13 @@ func hurt_animation() -> void:
 	
 func die() -> void:
 	queue_free()
+
+#mob sfx 
+func _on_SfxTrigger_entered(area: Area2D) -> void:
+	#player enter 
+	mobSfx.play()
+
+func _on_SfxTrigger_exited(area: Area2D) -> void:
+	#in case of the sfx is on loop
+	if mobSfx.playing == false:
+		mobSfx.stop()

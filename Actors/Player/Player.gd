@@ -1,8 +1,11 @@
 extends KinematicBody2D
 
 onready var animation = $AnimationPlayer
+onready var hurtSound = $HurtSound
+onready var invincibleTimer = $InvincibleTimer
 var velocity: = Vector2.ZERO
 var speed: = Global.CELL * 4
+var friction: = 0.05
 
 var jump: = Global.CELL * 7
 var gravity: = Global.CELL * 20
@@ -22,34 +25,37 @@ enum {
 }
 var state = MOVE
 ### 
-
+var hurtBy
 # Projectile
 export(String, FILE) var projectilePath
 var Projectile
 export var shootTimer: = 0.25
 
 #player stats
-var hp: = 4
+var hp: = 30
+var hitChoc: = 30 #on hit movement effect
 
 func _ready() -> void:
 	Projectile = load(projectilePath)
 	$TimerCanShoot.wait_time = shootTimer
 
-func _process(delta: float) -> void:
-	debug_console(canShoot)
-
 func _physics_process(delta: float) -> void:
 	match state:
 		MOVE:
-			_move()
+			_move(delta)
 		SHOOT:
 			_shoot()
+		HURT:
+			_hurt()
 					
 	enter_state()
 	
-func _move() -> void:
+func _move(delta) -> void:
 	var playerInput: = get_player_input()
-	velocity.x = playerInput.x * speed
+	if playerInput.x == 0:
+		velocity.x = lerp(velocity.x, 0, friction)
+	velocity.x = playerInput.x * speed 
+	
 	if playerInput.y == -1 and canJump:
 		_jump()
 	apply_gravity()
@@ -58,7 +64,11 @@ func _move() -> void:
 	isJumping = true if !is_on_floor() else false
 
 func _shoot() -> void:
-	if canShoot:
+	if isJumping:
+		apply_gravity()
+		velocity.x = lerp(velocity.x, 0, friction)
+		velocity = move_and_slide(velocity, Vector2.UP)
+	if canShoot:		
 		$ShootSound.play()
 		var projectile = Projectile.instance()
 		get_tree().get_root().add_child(projectile)
@@ -83,7 +93,7 @@ func get_player_input() -> Vector2:
 		
 	if _input.x != 0: lastHorizontalInput = _input.x 
 	
-	if Input.is_action_pressed("shoot") and !isJumping:
+	if Input.is_action_pressed("shoot"): # and !isJumping:
 		state = SHOOT # for animation - will check if can shoot after that
 
 	return _input
@@ -112,11 +122,6 @@ func enter_state() -> void:
 		$Sprite.flip_h = true
 		$ProjectilePosition.position.x = -9
 	
-		
-func debug_console(message) -> void:
-	pass
-#	$Label.text = str(message)
-
 func _on_TimerCanShoot_timeout() -> void:
 	canShoot = true
 
@@ -125,15 +130,24 @@ func restart_timer() -> void:
 
 func _on_PlayerHurtBox_area_entered(area: Area2D) -> void:
 	print("hit by a mob")
-	if hp > 0:
-		hurt()
+	if hp > 0:	
+		hurtBy = area	
+		state = HURT
 		hp -= 1
 	else:
 		die()
 
-func hurt() -> void:
-	pass
-
+func _hurt() -> void:
+	velocity.x = (position.x - hurtBy.position.x) * hitChoc
+	velocity = move_and_slide(velocity)
+	hurtSound.play()
+	$PlayerHurtBox/CollisionShape2D.disabled = true
+	invincibleTimer.start()
+	state = MOVE
+		
 func die() -> void:
 	print("player is dead")
 	pass
+	
+func _on_InvincibleTimer_timeout() -> void:
+	$PlayerHurtBox/CollisionShape2D.disabled = false
