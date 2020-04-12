@@ -6,7 +6,7 @@ onready var invincibleTimer = $InvincibleTimer
 var velocity: = Vector2.ZERO
 var max_speed: = Global.CELL * 4
 var acceleration: = 10.0
-var friction: = 0.1
+var friction: = 0.25
 
 var jump: = Global.CELL * 7
 var gravity: = Global.CELL * 20
