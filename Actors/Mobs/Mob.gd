@@ -13,10 +13,16 @@ export var velocity: = Vector2.ZERO
 export var speed: = 15
 export var direction:float = -1.0
 
+### Limit the deplacement distance left and right- in cell size - from the spawn point
+var spawnPosition: Vector2
+export var maxDistance: int = 2
+
 # other export
 export var health: int = 4
 
 func _ready() -> void:
+	maxDistance *= Global.CELL
+	spawnPosition = position
 	anim.frames = load(spritePath)
 	anim.play()
 	mobSfx.stream = load(sfxStreamPath)
@@ -26,6 +32,8 @@ func _physics_process(delta: float) -> void:
 	flip_anim(direction)
 
 func move(delta) -> void:
+	if position.x <= spawnPosition.x - maxDistance or position.x >= spawnPosition.x + maxDistance:
+		direction = -direction
 	velocity.x = direction
 	position.x += velocity.x * speed * delta
 		

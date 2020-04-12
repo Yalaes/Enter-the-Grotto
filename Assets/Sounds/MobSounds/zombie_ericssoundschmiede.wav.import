@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/zombie_ericssoundschmiede.wav-d7e7e2520a53cd6e98c7c3623d3891cf.sample"
+
+[deps]
+
+source_file="res://Assets/Sounds/MobSounds/zombie_ericssoundschmiede.wav"
+dest_files=[ "res://.import/zombie_ericssoundschmiede.wav-d7e7e2520a53cd6e98c7c3623d3891cf.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

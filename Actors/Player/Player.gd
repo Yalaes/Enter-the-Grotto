@@ -6,7 +6,7 @@ onready var invincibleTimer = $InvincibleTimer
 var velocity: = Vector2.ZERO
 var max_speed: = Global.CELL * 4
 var acceleration: = 10.0
-var friction: = 0.25
+var friction: = 0.20
 
 var jump: = Global.CELL * 7
 var gravity: = Global.CELL * 20
@@ -37,10 +37,13 @@ var hp: = 30
 var hitChoc: = 30 #on hit movement effect
 
 func _ready() -> void:
+	
 	Projectile = load(projectilePath)
+	
 	$TimerCanShoot.wait_time = shootTimer
 
 func _physics_process(delta: float) -> void:
+	
 	match state:
 		MOVE:
 			_move(delta)
@@ -52,7 +55,9 @@ func _physics_process(delta: float) -> void:
 	enter_state()
 	
 func _move(delta) -> void:	
+	
 	var playerInput: = get_player_input()
+	
 	#smooth acceleration
 	if playerInput.x != 0:
 		velocity.x += playerInput.x * acceleration 	
@@ -60,10 +65,11 @@ func _move(delta) -> void:
 	#smooth deceleration
 	else:
 		velocity.x = lerp(velocity.x, 0.0, friction)
+		
 	#can the player jump?
 	if playerInput.y == -1 and canJump:
 		_jump()	
-	#gravity
+		
 	apply_gravity()
 	
 	velocity = move_and_slide(velocity, Vector2.UP)
@@ -71,22 +77,32 @@ func _move(delta) -> void:
 	#flags - is_on_floor should be tested after move_and_slide
 	canJump = true if is_on_floor() else false
 	isJumping = true if !is_on_floor() else false
+	
+	if abs(round(velocity.x)) > 1 and abs(round(playerInput.x)) != 0 and $FootSteps.playing == false and is_on_floor():
+		$FootSteps.play()
 
 func _shoot() -> void:
+	
 	#can shoot while jumping
 	if isJumping:
 		apply_gravity()		
-		velocity.x = lerp(velocity.x, 0.0, friction / 4)#jump-shoot is mor slippy
+		velocity.x = lerp(velocity.x, 0.0, friction / 8)#jump-shoot is mor slippy
 		velocity = move_and_slide(velocity, Vector2.UP)		
+		
 	#canShoot toggled by timerCanSHoot
-	if canShoot:		
+	if canShoot:	
+			
 		$ShootSound.play()
+		
 		var projectile = Projectile.instance()
 		get_tree().get_root().add_child(projectile)
 		projectile.global_position = $ProjectilePosition.global_position
 		projectile.velocity *= lastHorizontalInput
+		
 		canShoot = false
+		
 		restart_timer()
+		
 	if Input.is_action_just_released("shoot"): state = MOVE
 			
 func get_player_input() -> Vector2:
@@ -110,11 +126,13 @@ func get_player_input() -> Vector2:
 
 func _jump() -> void:	
 		velocity.y = -jump 
+		$JumpSound.play()
 			
 func apply_gravity() -> void:
 	velocity.y += gravity * get_physics_process_delta_time()
 	
 func enter_state() -> void:	
+	
 	# manage animation
 	match state:
 		MOVE:
@@ -139,7 +157,7 @@ func restart_timer() -> void:
 	$TimerCanShoot.start()
 
 func _on_PlayerHurtBox_area_entered(area: Area2D) -> void:
-	print("hit by a mob")
+	
 	if hp > 0:	
 		hurtBy = area	
 		state = HURT
@@ -148,14 +166,19 @@ func _on_PlayerHurtBox_area_entered(area: Area2D) -> void:
 		die()
 
 func _hurt() -> void:
+	
 	velocity.x = (position.x - hurtBy.position.x) * hitChoc
 	velocity = move_and_slide(velocity)
+	
 	hurtSound.play()
+	
 	$PlayerHurtBox/CollisionShape2D.disabled = true
 	invincibleTimer.start()
+	
 	state = MOVE
 		
 func die() -> void:
+	#TODO
 	print("player is dead")
 	pass
 	

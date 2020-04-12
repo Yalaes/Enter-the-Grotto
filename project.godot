@@ -87,6 +87,7 @@ shoot={
 2d_physics/layer_4="ProjectileMob"
 2d_physics/layer_5="Collectible"
 2d_physics/layer_6="Environement"
+2d_physics/layer_7="SuperJump"
 
 [rendering]
 

@@ -15,7 +15,7 @@ extents = Vector2( 30.0119, 19.03 )
 collision_layer = 2
 collision_mask = 36
 script = ExtResource( 2 )
-spritePath = "res://Actors/Mobs/SpriteFrames/Skeleton.tres"
+spritePath = "res://Actors/Mobs/SpriteFrames/Ghost.tres"
 sfxStreamPath = "res://Assets/Sounds/Mob_sound_bat.wav"
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
@@ -30,8 +30,6 @@ shape = SubResource( 1 )
 position = Vector2( 0, -0.846393 )
 scale = Vector2( 0.807638, 0.207468 )
 
-[node name="MobSfx" type="AudioStreamPlayer" parent="."]
-
 [node name="SfxTrigger" type="Area2D" parent="."]
 visible = false
 monitorable = false
@@ -39,6 +37,19 @@ collision_layer = 0
 
 [node name="SfxCollision" type="CollisionShape2D" parent="SfxTrigger"]
 shape = SubResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -21.2713
+margin_top = -19.5901
+margin_right = 18.7287
+margin_bottom = -5.59007
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MobDead" type="AudioStreamPlayer" parent="."]
+
+[node name="MobSfx" type="AudioStreamPlayer" parent="."]
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_Actor_body_entered"]
 [connection signal="area_entered" from="SfxTrigger" to="." method="_on_SfxTrigger_entered"]
