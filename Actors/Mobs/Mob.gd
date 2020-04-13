@@ -9,7 +9,7 @@ export(String, FILE) var sfxStreamPath
 onready var mobSfx = $MobSfx
 
 # movement
-export var velocity: = Vector2.ZERO
+export var velocity: Vector2
 export var speed: = 15
 export var direction:float = -1.0
 
