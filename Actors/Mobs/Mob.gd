@@ -59,7 +59,7 @@ func _on_area_entered(area: Area2D) -> void:
 		die()
 
 func hurt_animation() -> void:
-	print("mob hurt anim")
+	pass
 	
 func die() -> void:
 	queue_free()

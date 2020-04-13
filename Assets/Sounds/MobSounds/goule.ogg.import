@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/goule.ogg-0041b1468ec84df95cb360ddbffb2b84.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/MobSounds/goule.ogg"
+dest_files=[ "res://.import/goule.ogg-0041b1468ec84df95cb360ddbffb2b84.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/mutant_frog-1.ogg-898ec9a1d606bba0f43412ccb8f2a05c.oggstr"
+
+[deps]
+
+source_file="res://Assets/Sounds/MobSounds/mutant_frog-1.ogg"
+dest_files=[ "res://.import/mutant_frog-1.ogg-898ec9a1d606bba0f43412ccb8f2a05c.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

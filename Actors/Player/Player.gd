@@ -3,6 +3,7 @@ extends KinematicBody2D
 onready var animation = $AnimationPlayer
 onready var hurtSound = $HurtSound
 onready var invincibleTimer = $InvincibleTimer
+onready var label = $Label
 var velocity: = Vector2.ZERO
 var max_speed: = Global.CELL * 4
 var acceleration: = 10.0
@@ -41,7 +42,7 @@ func _ready() -> void:
 	Projectile = load(projectilePath)
 	
 	$TimerCanShoot.wait_time = shootTimer
-
+	
 func _physics_process(delta: float) -> void:
 	
 	match state:
@@ -184,3 +185,12 @@ func die() -> void:
 	
 func _on_InvincibleTimer_timeout() -> void:
 	$PlayerHurtBox/CollisionShape2D.disabled = false
+
+func can_exit_level() -> void:
+	if Game.playerHasTheKey:
+		label.text = "Coming Soon..."
+	else:
+		label.text = "It's Locked!"
+		
+	yield(get_tree().create_timer(1.5), "timeout")
+	label.text = ""
